@@ -166,6 +166,10 @@ func (s *SessionManager) LoadAndSave(next http.Handler) http.Handler {
 	})
 }
 
+func (s *SessionManager) Key() contextKey {
+	return s.contextKey
+}
+
 func (s *SessionManager) writeSessionCookie(w http.ResponseWriter, token string, expiry time.Time) {
 	cookie := &http.Cookie{
 		Name:     s.Cookie.Name,
