@@ -51,7 +51,7 @@ func newSessionData(lifetime time.Duration) *sessionData {
 // Most applications will use the LoadAndSave() middleware and will not need to
 // use this method.
 func (s *SessionManager) Load(ctx context.Context, token string) (context.Context, error) {
-	if _, ok := ctx.Value(s.contextKey).(*sessionData); ok {
+	if _, ok := ctx.Value(string(s.contextKey)).(*sessionData); ok {
 		return ctx, nil
 	}
 
@@ -463,11 +463,11 @@ func (s *SessionManager) PopTime(ctx context.Context, key string) time.Time {
 }
 
 func (s *SessionManager) addSessionDataToContext(ctx context.Context, sd *sessionData) context.Context {
-	return context.WithValue(ctx, s.contextKey, sd)
+	return context.WithValue(ctx, string(s.contextKey), sd)
 }
 
 func (s *SessionManager) getSessionDataFromContext(ctx context.Context) *sessionData {
-	c, ok := ctx.Value(s.contextKey).(*sessionData)
+	c, ok := ctx.Value(string(s.contextKey)).(*sessionData)
 	if !ok {
 		panic("scs: no session data in context")
 	}
